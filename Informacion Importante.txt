@@ -1,0 +1,14 @@
+POO
+
+Clase
+Objeto = Instancia
+Encapsulamientio
+Herencia
+
+Abstraccion
+
+Clase Abstracta
+
+Método Abstracto
+Método constructor
+Polimorfismo
