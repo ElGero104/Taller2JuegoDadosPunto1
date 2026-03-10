@@ -6,8 +6,19 @@ import javax.swing.JButton;
 import javax.swing.JButton;
 import java.awt.Color;
 import java.awt.Font;
+import java.util.Random;
 
-public class FrmJuego extends JFrame{
+public class FrmJuego extends JFrame {
+
+    private Dado dado1=new Dado(); /* Atributo para almacenar el primer dado */
+    private Dado dado2=new Dado(); /* Atributo para almacenar el segundo dado */
+    private Random r = new Random(); /* Atributo para generar numeros aleatorios */
+    private JLabel lblDado1, lblDado2, lblLanzamientos, lblCenas; /* Atributos para almacenar los JLabel de los dados, lanzamientos y cenas */
+
+    private int lanzamientos,cenas; /* Atributo para almacenar el numero de lanzamientos y cenas */
+    
+    
+
     /* Metodo constructor */
     public FrmJuego(){
         setSize(500,300); /* Establece el tamaño de la ventana */
@@ -18,11 +29,11 @@ public class FrmJuego extends JFrame{
         String archivoImagen="imagenes/1.jpg"; /* Ruta de la imagen del dado */
         ImageIcon imgDado=new ImageIcon(getClass().getResource(archivoImagen)); /* Crea un objeto ImageIcon con la imagen del dado */
         
-        JLabel lblDado1=new JLabel(imgDado); /* Crea un JLabel con la imagen del dado */
+        lblDado1=new JLabel(imgDado); /* Crea un JLabel con la imagen del dado */
         lblDado1.setBounds(10, 10, imgDado.getIconWidth(), imgDado.getIconHeight()); /* Establece la posicion y el tamaño del JLabel */
         add(lblDado1); /* Agrega el JLabel a la ventana */
 
-        JLabel lblDado2=new JLabel(imgDado); /* Crea un JLabel con la imagen del dado */
+        lblDado2=new JLabel(imgDado); /* Crea un JLabel con la imagen del dado */
         lblDado2.setBounds(20+imgDado.getIconWidth(), 10, imgDado.getIconWidth(), imgDado.getIconHeight()); /* Establece la posicion y el tamaño del JLabel */
         add(lblDado2); /* Agrega el JLabel a la ventana */
 
@@ -30,7 +41,7 @@ public class FrmJuego extends JFrame{
         LblTituloLanzamiento.setBounds(30+2*imgDado.getIconWidth(), 10, 100, 25); /* Establece la posicion y el tamaño del JLabel */
         add(LblTituloLanzamiento); /* Agrega el JLabel a la ventana */
 
-        JLabel lblLanzamientos= new JLabel("0"); /* Crea un JLabel con el texto "0" */
+        lblLanzamientos= new JLabel("0"); /* Crea un JLabel con el texto "0" */
         lblLanzamientos.setBounds(30+2*imgDado.getIconWidth(), 45, 100, 100); /* Establece la posicion y el tamaño del JLabel */
         lblLanzamientos.setFont(new Font("Impact", Font.BOLD, 72)); /* Establece la fuente del JLabel */
         lblLanzamientos.setBackground(new Color(0,0,0)); /* Establece el color de fondo del JLabel */
@@ -45,7 +56,7 @@ public class FrmJuego extends JFrame{
         LblTituloCenas.setBounds(140+2*imgDado.getIconWidth(), 10, 100, 25); /* Establece la posicion y el tamaño del JLabel */
         add(LblTituloCenas); /* Agrega el JLabel a la ventana */
 
-        JLabel lblCenas= new JLabel("0"); /* Crea un JLabel con el texto "0" */
+        lblCenas= new JLabel("0"); /* Crea un JLabel con el texto "0" */
         lblCenas.setBounds(140+2*imgDado.getIconWidth(), 45, 100, 100); /* Establece la posicion y el tamaño del JLabel */
         lblCenas.setFont(new Font("Impact", Font.BOLD, 72)); /* Establece la fuente del JLabel */
         lblCenas.setBackground(new Color(0,0,0)); /* Establece el color de fondo del JLabel */
@@ -65,12 +76,35 @@ public class FrmJuego extends JFrame{
 
         // Eventos de los botones
         btnIniciar.addActionListener(e-> {
-            JOptionPane.showMessageDialog(this, "Hizo clic en Iniciar"); /* Muestra un mensaje de dialogo indicando que el juego ha iniciado */
+            iniciar();
         });
 
         btnLanzar.addActionListener(e-> {
-            JOptionPane.showMessageDialog(this, "Hizo clic en Lanzar"); /* Muestra un mensaje de dialogo indicando que se ha lanzado el dado */
+            lanzar();
         });
 
+    }
+
+    private void iniciar(){
+        lanzamientos=0; /* Reinicia el numero de lanzamientos */
+        cenas=0; /* Reinicia el numero de cenas */
+        lblLanzamientos.setText(String.valueOf(lanzamientos)); /* Actualiza el JLabel de lanzamientos */
+        lblCenas.setText(String.valueOf(cenas)); /* Actualiza el JLabel de cenas */
+    }
+
+    private void lanzar(){
+        dado1.lanzar(r);
+        dado2.lanzar(r);
+
+        dado1.mostrarDado(lblDado1);
+        dado2.mostrarDado(lblDado2);
+
+        lanzamientos++;
+        lblLanzamientos.setText(String.valueOf(lanzamientos));
+
+        if(dado1.getNumero()+dado2.getNumero()>=11){
+            cenas++;
+            lblCenas.setText(String.valueOf(cenas));
+        }
     }
 }
